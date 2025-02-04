@@ -21,6 +21,7 @@
 
 data() # shows all preloaded data available in R in the datasets package
 help(package="datasets")
+help(package="Orange")
 
 #Let's us the Violent Crime Rates by US State data 
 
