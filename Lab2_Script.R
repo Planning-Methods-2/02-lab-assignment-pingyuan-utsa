@@ -58,7 +58,7 @@ summary(building_permits_sa)
 building_permits_sa2 <- read.csv("https://data.sanantonio.gov/dataset/05012dcb-ba1b-4ade-b5f3-7403bc7f52eb/resource/c21106f9-3ef5-4f3a-8604-f992b4db7512/download/accelaissuedpermitsextract.csv",header = T) 
 
 
-
+#testst
 
 ## ---- Part 1.4: Loading data using a package + API ----
 #install.packages("tidycensus")
