@@ -59,34 +59,35 @@ summary(building_permits_sa)#abstract of each column,including min,max,mean...
 # Source: https://data.sanantonio.gov/dataset/building-permits/resource/c21106f9-3ef5-4f3a-8604-f992b4db7512
 
 building_permits_sa2 <- read.csv("https://data.sanantonio.gov/dataset/05012dcb-ba1b-4ade-b5f3-7403bc7f52eb/resource/c21106f9-3ef5-4f3a-8604-f992b4db7512/download/accelaissuedpermitsextract.csv",header = T) 
-
+#loading csv from internet and convert to the data frame
 
 #testst
 
 ## ---- Part 1.4: Loading data using a package + API ----
 #install.packages("tidycensus")
 #install.packages("tigris")
-help(package="tidycensus")
+install.packages("tidycensus")
+help(package="tidycensus")#instruction of package
 library(tidycensus)
 library(tigris)
 
 
 #type ?census_api_key to get your Census API for full access.
 
-age10 <- get_decennial(geography = "state", 
-                       variables = "P013001", 
-                       year = 2010)
+age10 <- get_decennial(geography = "state", #get decennial Census data,geographical level=state
+                       variables = "P013001", #"varible code,meaning Median Age
+                       year = 2010)#year
 
-head(age10)
+head(age10)#first five lines
 
 
 bexar_medincome <- get_acs(geography = "tract", variables = "B19013_001",
-                           state = "TX", county = "Bexar", geometry = TRUE)
+                           state = "TX", county = "Bexar", geometry = TRUE)#get median household income,geographical level=tract
 
 
-View(bexar_medincome)
+View(bexar_medincome)#view the data
 
-class(bexar_medincome)
+class(bexar_medincome)#returning single features(geographic) and data frame. 
 
 #---- Part 2: Visualizing the data ----
 #install.packages('ggplot2')
@@ -97,35 +98,39 @@ library(ggplot2)
 
 ## ---- Part 2.1: Visualizing the 'usa_arrests' data ----
 
-ggplot()
+ggplot()#define a drawing object
 
 #scatter plot - relationship between two continuous variables
 ggplot(data = usa_arrests,mapping = aes(x=Assault,y=Murder)) +
-  geom_point()
+  geom_point()#scatter plot,x axle is assault,y axle is murder
+#define global data and aesthetics mapping,then loading different plot(here is geom_point plot)
 
 ggplot() +
   geom_point(data = usa_arrests,mapping = aes(x=Assault,y=Murder))
-
+#define a blank drawing object and add different plots,(here is the scatter plot of usa_arrests)
 
 #bar plot - compare levels across observations
-usa_arrests$state<-rownames(usa_arrests)
+usa_arrests$state<-rownames(usa_arrests)#
+usa_arrests$state#extract column name
 
 ggplot(data = usa_arrests,aes(x=state,y=Murder))+
-  geom_bar(stat = 'identity')
+  geom_bar(stat = 'identity')#bar plot,y = the number of Murder
+
+ggplot()+geom_bar(data = usa_arrests,aes(x=state,y=Murder),stat='identity')#another syntax
 
 ggplot(data = usa_arrests,aes(x=reorder(state,Murder),y=Murder))+
   geom_bar(stat = 'identity')+
-  coord_flip()
+  coord_flip()#x axis is state ,ordered by murder,and flip the axises
 
 # adding color # would murder arrests be related to the percentage of urban population in the state?
 ggplot(data = usa_arrests,aes(x=reorder(state,Murder),y=Murder,fill=UrbanPop))+
   geom_bar(stat = 'identity')+
-  coord_flip()
+  coord_flip()#let the bars' color be based on the urban population,fill means color
 
 # adding size
 ggplot(data = usa_arrests,aes(x=Assault,y=Murder, size=UrbanPop)) +
   geom_point()
-
+#let the size of points be based on the urban population(introduce the third varible?)
 
 # plotting by south-east and everyone else 
 
