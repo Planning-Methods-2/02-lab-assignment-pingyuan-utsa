@@ -20,8 +20,8 @@
 ## ---- Part 1.1: Loading data from R pre-loaded packages ----
 
 data() # shows all preloaded data available in R in the datasets package
-help(package="datasets")
-help(package="Orange")
+help(package="datasets")#introduction of package dataset
+help(package="Orange")#introduction of package Orange
 
 #Let's us the Violent Crime Rates by US State data 
 
