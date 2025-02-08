@@ -25,17 +25,18 @@ help(package="Orange")#introduction of package Orange
 
 #Let's us the Violent Crime Rates by US State data 
 
-help("USArrests")
+help("USArrests")#introduction of data "USArrest"
 
 # Step 1. Load the data in you session by creating an object
 
 usa_arrests<-datasets::USArrests # this looks the object 'USAarrests' within '::' the package 'datasets'
+#:: means looking the specific object or function in one package
 
-class(usa_arrests)
-names(usa_arrests)
-dim(usa_arrests)
-head(usa_arrests)
-tail(usa_arrests)
+class(usa_arrests)#the type or usa_arrests,returning "data frame"
+names(usa_arrests)#access the column names,returning "Murder"   "Assault"  "UrbanPop" "Rape" 
+dim(usa_arrests)#dimension of the data frame,with 50 rows and 4 columns
+head(usa_arrests)#first five lines of the data frame
+tail(usa_arrests)#last five lines of the data frame
 
 ## ---- Part 1.2: Loading data from your computer directory ----
 # We will use the Building Permits data from the city of San Antonio open data portal
