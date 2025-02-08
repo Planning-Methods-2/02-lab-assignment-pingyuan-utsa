@@ -42,14 +42,16 @@ tail(usa_arrests)#last five lines of the data frame
 # We will use the Building Permits data from the city of San Antonio open data portal
 # Source: https://data.sanantonio.gov/dataset/building-permits/resource/c21106f9-3ef5-4f3a-8604-f992b4db7512
 
-building_permits_sa<-read.csv(file = "datasets/accelaissuedpermitsextract.csv",header = T)
+building_permits_sa<-read.csv(file = "datasets/accelaissuedpermitsextract.csv",header = T)#load csv to r and convert it into data frame,and regard the first line as column name
 
-names(building_permits_sa)
-View(building_permits_sa)
-class(building_permits_sa)
-dim(building_permits_sa)
+names(building_permits_sa)#column name,returning "PERMIT.TYPE"        "PERMIT.."           "PROJECT.NAME" ... 
+View(building_permits_sa)#view the data frame
+class(building_permits_sa)#type,returning "data frame"
+dim(building_permits_sa)#dimension,5232 rows and 16 columns
 str(building_permits_sa)
-summary(building_permits_sa)
+#structure of the data frame,including type,dimension,column name ,column type and several characters
+summary(building_permits_sa)#abstract of each column,including min,max,mean...
+
 
 
 ## ---- Part 1.3: Loading data directly from the internet ----
