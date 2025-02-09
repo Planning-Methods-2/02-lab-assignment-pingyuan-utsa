@@ -31,6 +31,13 @@ sa_opportunities<-subset(opportunities,czname=="San Antonio")
 sa_opportunities <- opportunities[opportunities$czname == "San Antonio", ]
 sa_opportunities
 # Create a plot that shows the ranking of the top 10 census tracts by Annualized job growth rate (`ann_avg_job_growth_2004_2013` variable) by census tract (tract variable). Save the resulting plot as a pdf with the name 'githubusername_p1.pdf' # Hint: for ordering you could use the `setorderv()` or reorder() functions, and the ggsave() function to export the plot to pdf. 
+head(sa_opportunities)
+class(sa_opportunities)
+names(sa_opportunities)
+top10 <- sa_opportunities[order(-ann_avg_job_growth_2004_2013)][1:10]
+library(ggplot2)
+ggplot(data=top10,aes(x=reorder(tract, ann_avg_job_growth_2004_2013),y=ann_avg_job_growth_2004_2013))+geom_bar(stat = "identity")
+ggsave(filename="D:/UTSA/UTSA course/25-spring/PlanningMethodsII/lab-assignment/02-lab-assignment-pingyuan-utsa/02_lab/plots/02_map.pdf",plot=last_plot())
 
 # Create a plot that shows the relation between the `frac_coll_plus` and the `hhinc_mean2000` variables, what can you hypothesize from this relation? what is the causality direction? Save the resulting plot as a pdf with the name 'githubusername_p3.pdf'
 
