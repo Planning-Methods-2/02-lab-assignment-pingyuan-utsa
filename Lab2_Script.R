@@ -135,21 +135,21 @@ ggplot(data = usa_arrests,aes(x=Assault,y=Murder, size=UrbanPop)) +
 # plotting by south-east and everyone else 
 
 usa_arrests$southeast<-as.numeric(usa_arrests$state%in%c("Florida","Georgia","Mississippi","Lousiana","South Carolina"))
-
+#check if usa_arrests$state belongs to c("Florida","Georgia","Mississippi","Lousiana","South Carolina"),and  translate bollean into number
 
 ggplot(data = usa_arrests,aes(x=Assault,y=Murder, size=UrbanPop, color=southeast)) +
-  geom_point()
+  geom_point()#the correlation between assault and murder,point size is based on urban pop,and color is based on southeast
 
-usa_arrests$southeast<-factor(usa_arrests$southeast,levels = c(1,0),labels = c("South-east state",'other'))
-
-ggplot(data = usa_arrests,aes(x=Assault,y=Murder, size=UrbanPop)) +
-  geom_point()+
-  facet_wrap(southeast~ .)
-
+usa_arrests$southeast<-factor(usa_arrests$southeast,levels = c(1,0),labels = c("South-east state",'other'))#change data into categorical variable based on 1 and 0
 
 ggplot(data = usa_arrests,aes(x=Assault,y=Murder, size=UrbanPop)) +
   geom_point()+
-  facet_grid(southeast ~ .)
+  facet_wrap(southeast~ .)#divide into 2 plots based on southeast&others
+
+
+ggplot(data = usa_arrests,aes(x=Assault,y=Murder, size=UrbanPop)) +
+  geom_point()+
+  facet_grid(southeast ~ .)#create a subgraph based on the specified southeast
 
 ## ---- Part 3: Visualizing the spatial data ----
 # Administrative boundaries
@@ -158,73 +158,75 @@ ggplot(data = usa_arrests,aes(x=Assault,y=Murder, size=UrbanPop)) +
 library(leaflet)
 library(tigris)
 
-bexar_county <- counties(state = "TX",cb=T)
-bexar_tracts<- tracts(state = "TX", county = "Bexar",cb=T)
-bexar_blockgps <- block_groups(state = "TX", county = "Bexar",cb=T)
+bexar_county <- counties(state = "TX",cb=T)#get geographic boundary data for U.S. counties,cb means simplified boundary
+bexar_tracts<- tracts(state = "TX", county = "Bexar",cb=T)#get geographic boundary data for tracts in Bexar county
+bexar_blockgps <- block_groups(state = "TX", county = "Bexar",cb=T)#get geographic boundary data for block_groups
 #bexar_blocks <- blocks(state = "TX", county = "Bexar") #takes lots of time
 
 
 # incremental visualization (static)
 
 ggplot()+
-  geom_sf(data = bexar_county)
+  geom_sf(data = bexar_county)#visualize counties' boundary
 
 ggplot()+
-  geom_sf(data = bexar_county[bexar_county$NAME=="Bexar",])
+  geom_sf(data = bexar_county[bexar_county$NAME=="Bexar",]#select Bexar's boundary
 
 ggplot()+
   geom_sf(data = bexar_county[bexar_county$NAME=="Bexar",])+
-  geom_sf(data = bexar_tracts)
+  geom_sf(data = bexar_tracts)#the boundary of bexar and the boundary of all the tracts
 
 p1<-ggplot()+
   geom_sf(data = bexar_county[bexar_county$NAME=="Bexar",],color='blue',fill=NA)+
   geom_sf(data = bexar_tracts,color='black',fill=NA)+
-  geom_sf(data = bexar_blockgps,color='red',fill=NA)
+  geom_sf(data = bexar_blockgps,color='red',fill=NA)#bexar boundary,the line is blue and no fill;tracts' boundary and blockgps with red lines
 
 ggsave(filename = "02_lab/plots/01_static_map.pdf",plot = p1) #saves the plot as a pdf
+
 
 
 
 # incremental visualization (interactive)
 
 #install.packages("mapview")
+install.packages("mapview")
 library(mapview)
 
-mapview(bexar_county)
+mapview(bexar_county)#interactive map
 
 mapview(bexar_county[bexar_county$NAME=="Bexar",])+
-  mapview(bexar_tracts)
+  mapview(bexar_tracts)#interactive map of the boundaries of bexar and bexar_tract
 
 mapview(bexar_county[bexar_county$NAME=="Bexar",])+
   mapview(bexar_tracts)+
-  mapview(bexar_blockgps)
+  mapview(bexar_blockgps)#interactive maps of boundaries of bexar and bexar census tracts and bexar blockgps
 
 
 #another way to vizualize this
 leaflet(bexar_county) %>%
-  addTiles() %>%
-  addPolygons()
+  addTiles() %>%#add open street map
+  addPolygons()#add polygon-bexar_county
 
-names(table(bexar_county$NAME))
-
-leaflet(bexar_county[bexar_county$NAME=="Bexar",]) %>%
-  addTiles() %>%
-  addPolygons()
+names(table(bexar_county$NAME))#creat the frequency frame of county names and then extract the names
 
 leaflet(bexar_county[bexar_county$NAME=="Bexar",]) %>%
   addTiles() %>%
-  addPolygons(group="county")%>%
-  addPolygons(data=bexar_tracts,group="tracts") %>%
-  addPolygons(data=bexar_blockgps,color = "#444444", weight = 1,group="block groups")
+  addPolygons()#creat the boundary of bexar_county
 
-leaflet(bexar_county[bexar_county$NAME=="Bexar",]) %>%
+leaflet(bexar_county[bexar_county$NAME=="Bexar",]) %>%#choose bexar county
+  addTiles() %>%#add open street map
+  addPolygons(group="county")%>%#add polygon
+  addPolygons(data=bexar_tracts,group="tracts") %>%#add census tracts boundary
+  addPolygons(data=bexar_blockgps,color = "#444444", weight = 1,group="block groups")#add blockgps boundary
+
+leaflet(bexar_county[bexar_county$NAME=="Bexar",]) %>%#load bexar county's boundary
   addTiles() %>%
-  addPolygons(group="county")%>%
-  addPolygons(data=bexar_tracts,group="tracts") %>%
-  addPolygons(data=bexar_blockgps,color = "#444444", weight = 1,group="block groups") %>%
+  addPolygons(group="county")%>%#add group "county"
+  addPolygons(data=bexar_tracts,group="tracts") %>%#add census tracts and group them as "tracts"
+  addPolygons(data=bexar_blockgps,color = "#444444", weight = 1,group="block groups") %>%#add blockgps and group them as block groups,color=#eeeeee,line weight=1
   addLayersControl(
-    overlayGroups = c("county", "tracts","block groups"),
-    options = layersControlOptions(collapsed = FALSE)
+    overlayGroups = c("county", "tracts","block groups"),#three layers can be controlled
+    options = layersControlOptions(collapsed = FALSE)#open the layer contorller
   )
 
 
