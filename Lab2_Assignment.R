@@ -37,13 +37,23 @@ names(sa_opportunities)
 top10 <- sa_opportunities[order(-ann_avg_job_growth_2004_2013)][1:10]
 library(ggplot2)
 ggplot(data=top10,aes(x=reorder(tract, ann_avg_job_growth_2004_2013),y=ann_avg_job_growth_2004_2013))+geom_bar(stat = "identity")
-ggsave(filename="D:/UTSA/UTSA course/25-spring/PlanningMethodsII/lab-assignment/02-lab-assignment-pingyuan-utsa/02_lab/plots/02_map.pdf",plot=last_plot())
+ggsave(filename="D:/UTSA/UTSA course/25-spring/PlanningMethodsII/lab-assignment/02-lab-assignment-pingyuan-utsa/02_lab/plots/githubusername_p1.pdf",plot=last_plot())
 
 # Create a plot that shows the relation between the `frac_coll_plus` and the `hhinc_mean2000` variables, what can you hypothesize from this relation? what is the causality direction? Save the resulting plot as a pdf with the name 'githubusername_p3.pdf'
+sa_opportunities <- na.omit(sa_opportunities, cols = c("frac_coll_plus2000", "hhinc_mean2000", "popdensity2000"))
+ggplot(data=sa_opportunities,aes(x=frac_coll_plus2000,y=hhinc_mean2000,size=popdensity2000,color=share_white2000))+geom_point(alpha = 0.6)
+#frac_coll_plus2000 is positively related to hhinc_mean2000,which means areas with a higher proportion of college-educated people tend to have higher mean household incomes.Popdensity might act as a hidden factor,which is negatively related with hhinc_mean2000
+ggsave(filename="D:/UTSA/UTSA course/25-spring/PlanningMethodsII/lab-assignment/02-lab-assignment-pingyuan-utsa/02_lab/plots/githubusername_p3.pdf",plot=last_plot())
 
 # Investigate (on the internet) how to add a title,a subtitle and a caption to your last plot. Create a new plot with that and save it as 'githubusername_p_extra.pdf'
-
-
+ggplot(data=sa_opportunities,aes(x=frac_coll_plus2000,y=hhinc_mean2000,size=popdensity2000,color=share_white2000))+geom_point(alpha = 0.6)+labs(title = "Relationship Between College Education and Household Income",
+       subtitle = "The impact of high education on household income",
+       caption = "Data source:datasets/tract_covariates",
+       x = "Proportion of Young People with High Education Per Track(2000)",
+       y = "Mean Household Income (2000)",
+       size = "Population Density",
+       color = "White Population Share") 
+ggsave(filename="D:/UTSA/UTSA course/25-spring/PlanningMethodsII/lab-assignment/02-lab-assignment-pingyuan-utsa/02_lab/plots/githubusername_p_extra.pdf",plot=last_plot())
 
 
 
